@@ -8,12 +8,12 @@ db.execute('create table if not exists ORDERS(AREA,SEAT integer,PRODUCT,QUANTITY
 db.close()
 from flet import *
 from flet_route import Routing,path
-from pages.LOGIN import Login
-from pages.HOME import Home
+from assets.LOGIN import Login
+from assets.HOME import Home
 def main(page:Page):
     app_routes=[path(url='/',view=Login,clear=True),
                 path(url='/HOME',view=Home,clear=True),
                 path(url='/LOGIN',view=Login,clear=True)]
     Routing(page=page,app_routes=app_routes)
     page.go(page.route)
-app(main)
+app(main,assets)
