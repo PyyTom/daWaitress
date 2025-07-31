@@ -1,13 +1,7 @@
 import sqlite3
 from flet import *
-
 from pages.HOME import home_view
-
-
-def login_view(page: Page):
-    def theme(e):
-        page.theme_mode = 'LIGHT' if page.theme_mode == 'DARK' else 'DARK'
-        page.update()
+def login_view(page: Page,theme,alert):
     def upd(how):
         db = sqlite3.connect('db.db')
         if how == 'login':
