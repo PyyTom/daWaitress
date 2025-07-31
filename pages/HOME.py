@@ -1,10 +1,6 @@
 import sqlite3
 from flet import *
-def home_view(page: Page):
-    user=page.data.get('user')
-    def theme(e):
-        page.theme_mode = 'LIGHT' if page.theme_mode == 'DARK' else 'DARK'
-        page.update()
+def home_view(page: Page,theme,alert):
     def bill(e):
         db=sqlite3.connect('db.db')
         db.execute('delete from WORKING where AREA=? and TABLE_=?',(r_order.controls[0].value,r_order.controls[1].value,))
@@ -66,6 +62,7 @@ def home_view(page: Page):
             c_category.controls=[GridView([Container(tooltip='CLICK FOR ADDING IT TO ORDER',content=Column([Text(item[1]+' $.'+str(item[2]))]),image=DecorationImage(src=item[4]),width=200,height=200,on_click=lambda e,product=item[1],price=item[2]:to_order(product,price)) for item in db.execute('select * from PRODUCTS where CATEGORY=?',(e.control.text,)).fetchall()],expand=1,runs_count=3,auto_scroll=True)]
         db.close()
         page.update()
+    user=page.data.get('user')
     c_tables = Column()
     db = sqlite3.connect('db.db')
     if db.execute('select * from PRODUCTS').fetchall()!=[]:r_categories=Row([ElevatedButton(category[0],on_click=show_category,tooltip='IT SHOWS '+category[0]) for category in db.execute('select CATEGORY from PRODUCTS group by CATEGORY order by CATEGORY').fetchall()],width=600,alignment=MainAxisAlignment.CENTER)
@@ -75,7 +72,6 @@ def home_view(page: Page):
     r_order=Row(alignment=MainAxisAlignment.CENTER)
     c_order=Column(width=600,height=500,scroll=ScrollMode.ALWAYS)
     upd_tables(None)
-    alert=AlertDialog(title=Text(''))
     return Column([Row([Switch(on_change=theme,tooltip='CHANGE THEME-MODE (DARK/LIGHT)'),
                         Text('daRestaurant, user '+user, size=30, color='orange'),
                         ElevatedButton('EDITOR', on_click=lambda _: page.go('/EDITOR'),tooltip='TO ADDING,EDITING AND DELETING AREAS,TABLES AND PRODUCTS'),
