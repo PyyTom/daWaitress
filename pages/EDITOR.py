@@ -1,10 +1,6 @@
 import sqlite3,os
 from flet import *
-def editor_view(page: Page,picker:FilePicker):
-    user=page.data.get('user')
-    def theme(e):
-        page.theme_mode = 'LIGHT' if page.theme_mode == 'DARK' else 'DARK'
-        page.update()
+def editor_view(page: Page,theme,alert,picker):
     def upd_textfield(which):
         db=sqlite3.connect('db.db')
         if which=='area':
@@ -76,7 +72,7 @@ def editor_view(page: Page,picker:FilePicker):
             alert.title=Text('EMPTY FIELDS')
             page.open(alert)
         else:pass
-    alert = AlertDialog(title=Text(''))
+    user=page.data.get('user')
     d_areas = Dropdown(label='AREAS',options=[dropdown.Option('NEW')],on_change=lambda _:upd_textfield('area'))
     t_area = TextField(label='AREA')
     t_tables = TextField(label='TABLES', keyboard_type=KeyboardType.NUMBER)
