@@ -24,8 +24,9 @@ def main(page: Page):
     page.theme_mode = 'DARK'
     page.window.full_screen = True
     picker=FilePicker()
-    page.add(alert)
     page.overlay.append(picker)
+    alert=AlertDialog(title=Text(''))
+    page.add(alert)
     page.on_route_change = lambda e: route_to(e.route)
     page.go('/LOGIN')
-app(main,'images')
+app(main,assets_dir='images')
