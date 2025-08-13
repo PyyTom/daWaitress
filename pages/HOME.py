@@ -1,6 +1,7 @@
 import sqlite3
 from flet import *
 def home_view(page: Page,theme,alert):
+    user=page.data.get('user')
     def bill(e):
         db=sqlite3.connect('db.db')
         db.execute('delete from WORKING where AREA=? and TABLE_=?',(r_order.controls[0].value,r_order.controls[1].value,))
@@ -62,7 +63,6 @@ def home_view(page: Page,theme,alert):
             c_category.controls=[GridView([Container(tooltip='CLICK FOR ADDING IT TO ORDER',content=Column([Text(item[1]+' $.'+str(item[2]))]),image=DecorationImage(src=item[4]),width=200,height=200,on_click=lambda e,product=item[1],price=item[2]:to_order(product,price)) for item in db.execute('select * from PRODUCTS where CATEGORY=?',(e.control.text,)).fetchall()],expand=1,runs_count=3,auto_scroll=True)]
         db.close()
         page.update()
-    user=page.data.get('user')
     c_tables = Column()
     db = sqlite3.connect('db.db')
     if db.execute('select * from PRODUCTS').fetchall()!=[]:r_categories=Row([ElevatedButton(category[0],on_click=show_category,tooltip='IT SHOWS '+category[0]) for category in db.execute('select CATEGORY from PRODUCTS group by CATEGORY order by CATEGORY').fetchall()],width=600,alignment=MainAxisAlignment.CENTER)
@@ -81,5 +81,4 @@ def home_view(page: Page,theme,alert):
                    Divider(),
                    Row([Row([Text('PRODUCTS',color='orange',size=20)],alignment=MainAxisAlignment.CENTER,width=600), VerticalDivider(),Row([Text('ORDER',color='orange',size=20)],alignment=MainAxisAlignment.CENTER,width=600)], height=50),
                    Row([r_categories, VerticalDivider(),r_order], height=50),
-                   Row([c_category, VerticalDivider(),c_order], height=500),
-                   alert])
+                   Row([c_category, VerticalDivider(),c_order], height=500)])
